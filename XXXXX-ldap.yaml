@@ -1,0 +1,28 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: ldapidp
+    challenge: true
+    login: true
+    mappingMethod: claim
+    type: LDAP
+    ldap:
+      attributes:
+        id:
+        - dn
+        email:
+        - mail
+        name:
+        - cn
+        preferredUsername:
+        - uid
+      bindDN: "uid=admin,cn=users,cn=accounts,dc=shared,dc=example,dc=XXXXX,dc=com"
+      bindPassword:
+        name: XXXXX-ldap-secret
+      insecure: false
+      ca:
+        name: XXXXX-ldap-ca-cert
+      url: "ldaps://ldap.XXXXX.com:[your-port]/cn=users,cn=accounts,dc=shared,dc=example,dc=XXXXX,dc=com?uid?sub?(memberOf=cn=ocp-users,cn=groups,cn=accounts,dc=shared,dc=example,dc=XXXXX,dc=com)"
